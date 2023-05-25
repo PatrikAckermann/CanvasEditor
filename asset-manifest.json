@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/CanvasEditor/static/js/main.809169db.js",
+    "main.js": "/CanvasEditor/static/js/main.c0c4418d.js",
     "index.html": "/CanvasEditor/index.html",
-    "main.809169db.js.map": "/CanvasEditor/static/js/main.809169db.js.map"
+    "main.c0c4418d.js.map": "/CanvasEditor/static/js/main.c0c4418d.js.map"
   },
   "entrypoints": [
-    "static/js/main.809169db.js"
+    "static/js/main.c0c4418d.js"
   ]
 }
