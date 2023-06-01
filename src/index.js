@@ -2,6 +2,7 @@ import {fabric} from "fabric"
 import UAParser from "ua-parser-js"
 
 var currentlyDragging = ""
+var categories = {}
 
 // Check device type
 var parser = new UAParser("user-agent")
@@ -36,7 +37,15 @@ function dragging(name) { // Needed because the event in onDragDrop() doesn't re
 }
 
 function deleteObject() {
-    canvas.remove(canvas.getActiveObject())
+    console.log(canvas.getActiveObject()._objects)
+    var objects = canvas.getActiveObject()
+    if (objects._objects !== undefined) {
+        objects._objects.forEach(x => {
+            canvas.remove(x)
+        })
+    } else {
+        canvas.remove(canvas.getActiveObject())
+    }
 }
 
 function deleteAllObjects() {
@@ -54,10 +63,6 @@ function download(dataurl, filename) {
 
 function downloadCanvas() {
     download(canvas.toDataURL({format: "png", quality: 1}), "bild.png")
-}
-
-function test() {
-    alert("Test button currently does not have any tests")
 }
 
 function moveForward() {
@@ -83,13 +88,101 @@ function addObject(name, x=100, y=100) {
     })
 }
 
+function test() {
+    var div = document.getElementsByClassName("imgsDiv")[0]
+    div.scrollTo({left: 0, behavior: "smooth"})
+}
+
+function loadImages(json) { // Takes each category and creates a div with all images from it in it.
+    categories = []
+    function addSidebarElement(category) {
+        categories[category.name] = [category.imgs.length - 1, 0]
+
+        var rootDiv = document.getElementById("objects")
+        var div = document.createElement("div")
+        div.setAttribute("class", "category")
+        var title = document.createElement("h2")
+        title.innerHTML = category.name
+        div.appendChild(title)
+        var imgsDiv = document.createElement("div")
+        imgsDiv.setAttribute("class", "imgsDiv")
+        imgsDiv.setAttribute("id", category.name)
+        div.appendChild(imgsDiv)
+        
+        category.imgs.forEach(x => {
+            var name = /[ \w-]+\./.exec(x.src)[0].replace(".", "")
+            var image = document.createElement("img")
+            image.setAttribute("class", "objectImg")
+            image.setAttribute("id", name)
+            image.setAttribute("onclick", `addObject('${name}')`)
+            image.setAttribute("src", x.src)
+            image.setAttribute("ondragstart", `dragging("${name}")`)
+            
+            var imgDiv = document.createElement("div")
+
+            
+
+            
+            imgDiv.setAttribute("class", "imgContainer")
+            imgDiv.appendChild(image)
+
+            imgsDiv.appendChild(imgDiv)    
+        })
+
+        if (category.imgs.length > 1) { // Create scroll buttons only when there are 2 or more images
+            var backButton = document.createElement("button")
+            var forwardButton = document.createElement("button")
+            backButton.setAttribute("onclick", `scrolllLeft('${category.name}')`)
+            forwardButton.setAttribute("onclick", `scrollRight('${category.name}')`)
+            backButton.setAttribute("class", `backButton`)
+            forwardButton.setAttribute("class", `forwardButton`)
+            backButton.innerHTML = "<"
+            forwardButton.innerHTML = ">"
+            imgsDiv.appendChild(backButton)
+            imgsDiv.appendChild(forwardButton)
+        }
+        
+        rootDiv.append(div)
+    }
+    
+    json.forEach(category => {
+        addSidebarElement(category)
+    })
+    onResize()
+    console.log(categories)
+}
+
+function scrolllLeft(categoryName) { // Scrolls the image carousel to the left. 3 Ls because it for some reason doesn't work with 2
+    var div = document.getElementById(categoryName)
+    if (categories[categoryName][1] <= 0) {
+        categories[categoryName][1] = categories[categoryName][0]
+    } else {
+        categories[categoryName][1] = categories[categoryName][1] - 1
+    }
+    div.scrollTo({left: categories[categoryName][1] * 200, behavior: "smooth"})
+}
+
+function scrollRight(categoryName) { // Scrolls the image carousel to the right.
+    var div = document.getElementById(categoryName)
+    if (categories[categoryName][1] >= categories[categoryName][0]) {
+        categories[categoryName][1] = 0
+    } else {
+        categories[categoryName][1] = categories[categoryName][1] + 1
+    }
+    div.scrollTo({left: categories[categoryName][1] * 200, behavior: "smooth"})
+}
+
+fetch("img/images.json").then(x => x.json()).then(x => loadImages(x)) // Loads the image json and then starts loadImages()
+
 // Make functions accessible in HTML
 window.deleteObject = deleteObject
 window.deleteAllObjects = deleteAllObjects
 window.downloadCanvas = downloadCanvas
-window.test = test
 window.moveForward = moveForward
 window.moveBackward = moveBackward
 window.addObject = addObject
 window.onDragDrop = onDragDrop
 window.dragging = dragging
+window.test = test
+window.scrollRight = scrollRight
+window.scrolllLeft = scrolllLeft

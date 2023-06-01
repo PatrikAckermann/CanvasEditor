@@ -58,11 +58,64 @@ body {
     overflow-y: scroll;
 }
 
-.objects > img {
+/*.objects > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.objects > div > button {
+    position:static;
+    top: 50;
+    left: 50;
+}
+
+.objects > div > img {
     width: 200px;
     margin: 10px;
 
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     padding: 5px;
+}
+*/
+
+.category {
+    display: flex;
+    flex-direction: column;
+}
+
+.imgsDiv {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+}
+
+.imgContainer {
+    min-width: 200px;
+    min-height: 200px;
+    scroll-snap-align: start;
+}
+
+.imgContainer > img {
+    max-width: 200px;
+    max-height: 200px;
+    height: fit-content;
+}
+
+.backButton {
+    height: 20px;
+    width: 20px;
+    position: fixed;
+    transform: translate(0px, 80px);
+}
+
+.forwardButton {
+    height: 20px;
+    width: 20px;
+    position: fixed;
+    transform: translate(180px, 80px);
 }
