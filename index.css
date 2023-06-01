@@ -16,7 +16,7 @@ body {
 
 .leftDiv {
     height: 100vh;
-    width: calc(100vw - 250px); /* 100% width - width of object list*/
+    width: calc(100vw - 300px); /* 100% width - width of object list*/
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -53,31 +53,14 @@ body {
 .objects {
     height: 100vh;
     display: flex;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-right: 10px;
     
     flex-direction: column;
     overflow-y: scroll;
 }
-
-/*.objects > div {
-    display: flex;
-    flex-direction: column;
-}
-
-.objects > div > button {
-    position:static;
-    top: 50;
-    left: 50;
-}
-
-.objects > div > img {
-    width: 200px;
-    margin: 10px;
-
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    padding: 5px;
-}
-*/
 
 .category {
     display: flex;
@@ -98,12 +81,22 @@ body {
     min-width: 200px;
     min-height: 200px;
     scroll-snap-align: start;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .imgContainer > img {
-    max-width: 200px;
-    max-height: 200px;
+    max-width: 150px;
+    max-height: 150px;
+    padding: 25px;
     height: fit-content;
+}
+
+.scrollButton {
+    border: none;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .backButton {
@@ -118,4 +111,11 @@ body {
     width: 20px;
     position: fixed;
     transform: translate(180px, 80px);
+}
+
+.objectTitle {
+    position: fixed;
+    width: 200px;
+    text-align: center;
+    transform: translate(0px, 180px);
 }
