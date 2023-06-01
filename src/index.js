@@ -89,8 +89,7 @@ function addObject(name, x=100, y=100) {
 }
 
 function test() {
-    var div = document.getElementsByClassName("imgsDiv")[0]
-    div.scrollTo({left: 0, behavior: "smooth"})
+    
 }
 
 function loadImages(json) { // Takes each category and creates a div with all images from it in it.
@@ -100,6 +99,8 @@ function loadImages(json) { // Takes each category and creates a div with all im
 
         var rootDiv = document.getElementById("objects")
         var div = document.createElement("div")
+        var flexDiv = document.createElement("div")
+        flexDiv.setAttribute("class", "categoryFlexContainer")
         div.setAttribute("class", "category")
         var title = document.createElement("h2")
         title.innerHTML = category.name
@@ -107,7 +108,7 @@ function loadImages(json) { // Takes each category and creates a div with all im
         var imgsDiv = document.createElement("div")
         imgsDiv.setAttribute("class", "imgsDiv")
         imgsDiv.setAttribute("id", category.name)
-        div.appendChild(imgsDiv)
+        div.appendChild(flexDiv)
         
         category.imgs.forEach(x => {
             var name = /[ \w-]+\./.exec(x.src)[0].replace(".", "")
@@ -135,21 +136,26 @@ function loadImages(json) { // Takes each category and creates a div with all im
             forwardButton.setAttribute("class", `forwardButton scrollButton`)
             backButton.innerHTML = "<"
             forwardButton.innerHTML = ">"
-            imgsDiv.appendChild(backButton)
-            imgsDiv.appendChild(forwardButton)
-        }
-
+            
+            flexDiv.appendChild(backButton)
+            flexDiv.appendChild(imgsDiv)
+            flexDiv.appendChild(forwardButton)
+        } else {flexDiv.appendChild(imgsDiv)}
+        
         var imgTitle = document.createElement("p")
         imgTitle.setAttribute("class", "objectTitle")
         imgTitle.setAttribute("id", category.name + "Title")
         imgTitle.innerHTML = category.imgs[0].name
 
-        imgsDiv.appendChild(imgTitle)
+        div.appendChild(imgTitle)
         
         rootDiv.append(div)
     }
     
     json.forEach(category => {
+        addSidebarElement(category)
+        addSidebarElement(category)
+        addSidebarElement(category)
         addSidebarElement(category)
     })
     onResize()
