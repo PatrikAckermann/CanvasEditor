@@ -23,8 +23,11 @@ function onResize() { // Made because the canvas size can't be changed in CSS
     var div = document.getElementById("leftDiv")
     canvas.setHeight(div.offsetHeight - 75) // Height of the left side - size of the buttons at the bottom
     canvas.setWidth(div.offsetWidth - 10)
-    if (div.offsetWidth - 10 <= 800) { // If the width of the left side is smaller than the width of 6 buttons make space for 2 button rows
+    if (div.offsetWidth - 10 <= 654) { // If the width of the left side is smaller than the width of 6 buttons make space for 2 button rows
         canvas.setHeight(div.offsetHeight - 140)
+    }
+    if (div.offsetWidth - 10 <= 387) {
+        canvas.setHeight(div.offsetHeight - 200)
     }
 }
 window.addEventListener("resize", onResize)
@@ -41,7 +44,6 @@ function dragging(name) { // Needed because the event in onDragDrop() doesn't re
 }
 
 function deleteObject() {
-    console.log(canvas.getActiveObject()._objects)
     var objects = canvas.getActiveObject()
     if (objects._objects !== undefined) {
         objects._objects.forEach(x => {
@@ -90,10 +92,6 @@ function addObject(name, x=100, y=100) {
         }
         canvas.add(oImg)
     })
-}
-
-function test() {
-    
 }
 
 function loadImages(json) { // Takes each category and creates a div with all images from it in it.
@@ -160,7 +158,6 @@ function loadImages(json) { // Takes each category and creates a div with all im
         addSidebarElement(category)
     })
     onResize()
-    console.log(categories)
 }
 
 function scrolllLeft(categoryName) { // Scrolls the image carousel to the left. 3 Ls because it for some reason doesn't work with 2
@@ -200,6 +197,5 @@ window.moveBackward = moveBackward
 window.addObject = addObject
 window.onDragDrop = onDragDrop
 window.dragging = dragging
-window.test = test
 window.scrollRight = scrollRight
 window.scrolllLeft = scrolllLeft
