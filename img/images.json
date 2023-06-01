@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Kategorie 1",
+        "imgs": [
+            {"name": "Bild 200x200", "src": "img/placeholder200x200.png"},
+            {"name": "Bild 400x200", "src": "img/placeholder400x200.png"},
+            {"name": "Bild 200x400", "src": "img/placeholder200x400.png"}
+        ]
+    },
+    {
+        "name": "Kategorie 2",
+        "imgs": [
+            {"name": "Bild 5000x5000", "src": "img/placeholder5000x5000.png"}
+        ]
+    }
+]
