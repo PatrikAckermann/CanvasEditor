@@ -67,6 +67,13 @@ body {
     flex-direction: column;
 }
 
+.categoryFlexContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
 .imgsDiv {
     width: 200px;
     height: 200px;
@@ -87,9 +94,9 @@ body {
 }
 
 .imgContainer > img {
-    max-width: 150px;
-    max-height: 150px;
-    padding: 25px;
+    max-width: 180px;
+    max-height: 180px;
+    padding: 10px;
     height: fit-content;
 }
 
@@ -102,20 +109,14 @@ body {
 .backButton {
     height: 20px;
     width: 20px;
-    position: fixed;
-    transform: translate(0px, 80px);
 }
 
 .forwardButton {
     height: 20px;
     width: 20px;
-    position: fixed;
-    transform: translate(180px, 80px);
 }
 
 .objectTitle {
-    position: fixed;
-    width: 200px;
+    width: 240px;
     text-align: center;
-    transform: translate(0px, 180px);
 }
