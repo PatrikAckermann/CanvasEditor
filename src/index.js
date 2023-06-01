@@ -141,7 +141,7 @@ function loadImages(json) { // Takes each category and creates a div with all im
             flexDiv.appendChild(imgsDiv)
             flexDiv.appendChild(forwardButton)
         } else {flexDiv.appendChild(imgsDiv)}
-        
+
         var imgTitle = document.createElement("p")
         imgTitle.setAttribute("class", "objectTitle")
         imgTitle.setAttribute("id", category.name + "Title")
@@ -153,9 +153,6 @@ function loadImages(json) { // Takes each category and creates a div with all im
     }
     
     json.forEach(category => {
-        addSidebarElement(category)
-        addSidebarElement(category)
-        addSidebarElement(category)
         addSidebarElement(category)
     })
     onResize()

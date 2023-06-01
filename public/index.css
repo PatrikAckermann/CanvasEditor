@@ -51,7 +51,7 @@ body {
 }
 
 .objects {
-    height: 100vh;
+    height: calc(100vh - 20px); /* -20 so it doesn't cut off at the bottom*/
     display: flex;
     margin-left: 10px;
     margin-top: 10px;
