@@ -96,7 +96,7 @@ function test() {
 function loadImages(json) { // Takes each category and creates a div with all images from it in it.
     categories = []
     function addSidebarElement(category) {
-        categories[category.name] = [category.imgs.length - 1, 0]
+        categories[category.name] = [category.imgs.length - 1, 0, category.imgs]
 
         var rootDiv = document.getElementById("objects")
         var div = document.createElement("div")
@@ -119,9 +119,6 @@ function loadImages(json) { // Takes each category and creates a div with all im
             image.setAttribute("ondragstart", `dragging("${name}")`)
             
             var imgDiv = document.createElement("div")
-
-            
-
             
             imgDiv.setAttribute("class", "imgContainer")
             imgDiv.appendChild(image)
@@ -134,13 +131,20 @@ function loadImages(json) { // Takes each category and creates a div with all im
             var forwardButton = document.createElement("button")
             backButton.setAttribute("onclick", `scrolllLeft('${category.name}')`)
             forwardButton.setAttribute("onclick", `scrollRight('${category.name}')`)
-            backButton.setAttribute("class", `backButton`)
-            forwardButton.setAttribute("class", `forwardButton`)
+            backButton.setAttribute("class", `backButton scrollButton`)
+            forwardButton.setAttribute("class", `forwardButton scrollButton`)
             backButton.innerHTML = "<"
             forwardButton.innerHTML = ">"
             imgsDiv.appendChild(backButton)
             imgsDiv.appendChild(forwardButton)
         }
+
+        var imgTitle = document.createElement("p")
+        imgTitle.setAttribute("class", "objectTitle")
+        imgTitle.setAttribute("id", category.name + "Title")
+        imgTitle.innerHTML = category.imgs[0].name
+
+        imgsDiv.appendChild(imgTitle)
         
         rootDiv.append(div)
     }
@@ -160,6 +164,9 @@ function scrolllLeft(categoryName) { // Scrolls the image carousel to the left. 
         categories[categoryName][1] = categories[categoryName][1] - 1
     }
     div.scrollTo({left: categories[categoryName][1] * 200, behavior: "smooth"})
+
+    var text = document.getElementById(categoryName + "Title")
+    text.innerHTML = categories[categoryName][2][categories[categoryName][1]].name
 }
 
 function scrollRight(categoryName) { // Scrolls the image carousel to the right.
@@ -170,6 +177,9 @@ function scrollRight(categoryName) { // Scrolls the image carousel to the right.
         categories[categoryName][1] = categories[categoryName][1] + 1
     }
     div.scrollTo({left: categories[categoryName][1] * 200, behavior: "smooth"})
+
+    var text = document.getElementById(categoryName + "Title")
+    text.innerHTML = categories[categoryName][2][categories[categoryName][1]].name
 }
 
 fetch("img/images.json").then(x => x.json()).then(x => loadImages(x)) // Loads the image json and then starts loadImages()
