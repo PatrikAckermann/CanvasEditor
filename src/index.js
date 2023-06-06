@@ -1,5 +1,5 @@
 import {fabric} from "fabric"
-import UAParser from "ua-parser-js"
+import csvparse from "parse-csv-to-obj"
 
 var currentlyDragging = ""
 var categories = {}
@@ -94,10 +94,10 @@ function addObject(name, x=100, y=100) {
     })
 }
 
-function loadImages(json) { // Takes each category and creates a div with all images from it in it.
+function loadImages(csv) { // Takes each category and creates a div with all images from it in it.
     categories = []
-    function addSidebarElement(category) {
-        categories[category.name] = [category.imgs.length - 1, 0, category.imgs]
+    function addSidebarElement(categoryName, items) {
+        categories[categoryName] = [items.length - 1, 0, items]
 
         var rootDiv = document.getElementById("objects")
         var div = document.createElement("div")
@@ -105,20 +105,20 @@ function loadImages(json) { // Takes each category and creates a div with all im
         flexDiv.setAttribute("class", "categoryFlexContainer")
         div.setAttribute("class", "category")
         var title = document.createElement("h2")
-        title.innerHTML = category.name
+        title.innerHTML = categoryName
         div.appendChild(title)
         var imgsDiv = document.createElement("div")
         imgsDiv.setAttribute("class", "imgsDiv")
-        imgsDiv.setAttribute("id", category.name)
+        imgsDiv.setAttribute("id", categoryName)
         div.appendChild(flexDiv)
         
-        category.imgs.forEach(x => {
-            var name = /[ \w-]+\./.exec(x.src)[0].replace(".", "")
+        items.forEach(x => {
+            var name = /[ \w-]+\./.exec(x[1])[0].replace(".", "")
             var image = document.createElement("img")
             image.setAttribute("class", "objectImg")
             image.setAttribute("id", name)
             image.setAttribute("onclick", `addObject('${name}')`)
-            image.setAttribute("src", x.src)
+            image.setAttribute("src", x[1])
             image.setAttribute("ondragstart", `dragging("${name}")`)
             
             var imgDiv = document.createElement("div")
@@ -129,11 +129,11 @@ function loadImages(json) { // Takes each category and creates a div with all im
             imgsDiv.appendChild(imgDiv)    
         })
 
-        if (category.imgs.length > 1) { // Create scroll buttons only when there are 2 or more images
+        if (items.length > 1) { // Create scroll buttons only when there are 2 or more images
             var backButton = document.createElement("button")
             var forwardButton = document.createElement("button")
-            backButton.setAttribute("onclick", `scrolllLeft('${category.name}')`)
-            forwardButton.setAttribute("onclick", `scrollRight('${category.name}')`)
+            backButton.setAttribute("onclick", `scrolllLeft('${categoryName}')`)
+            forwardButton.setAttribute("onclick", `scrollRight('${categoryName}')`)
             backButton.setAttribute("class", `backButton scrollButton`)
             forwardButton.setAttribute("class", `forwardButton scrollButton`)
             backButton.innerHTML = "<"
@@ -146,17 +146,18 @@ function loadImages(json) { // Takes each category and creates a div with all im
 
         var imgTitle = document.createElement("p")
         imgTitle.setAttribute("class", "objectTitle")
-        imgTitle.setAttribute("id", category.name + "Title")
-        imgTitle.innerHTML = category.imgs[0].name
+        imgTitle.setAttribute("id", categoryName + "Title")
+        imgTitle.innerHTML = items[0][0]
 
         div.appendChild(imgTitle)
         
         rootDiv.append(div)
     }
-    
-    json.forEach(category => {
-        addSidebarElement(category)
-    })
+
+    var csv = csvparse(csv, {0: "category"}, [0])
+    for (var key in csv) {
+        addSidebarElement(key, csv[key])
+    }
     onResize()
 }
 
@@ -186,7 +187,7 @@ function scrollRight(categoryName) { // Scrolls the image carousel to the right.
     text.innerHTML = categories[categoryName][2][categories[categoryName][1]].name
 }
 
-fetch("img/images.json").then(x => x.json()).then(x => loadImages(x)) // Loads the image json and then starts loadImages()
+fetch("img/images.csv").then(x => x.text()).then(x => loadImages(x)) // Loads the image json and then starts loadImages()
 
 // Make functions accessible in HTML
 window.deleteObject = deleteObject
